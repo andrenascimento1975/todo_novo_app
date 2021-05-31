@@ -1,7 +1,7 @@
 from django.urls import path
 from .models import Tarefa, Grupos, Sub_Grupos
 from .views import Logar, Registrar, VisualizaGrupo, VisualizaSubGrupo, CriarGrupo, AtualizarGrupo, \
-    ApagarGrupo, MostraSubGrupo, pega_get, pega_get_tarefa, exclui_subgrupo, edita_subgrupo, exclui_tarefa, edita_tarefa
+    ApagarGrupo, MostraSubGrupo, pega_get, pega_get_tarefa, exclui_subgrupo, edita_subgrupo, exclui_tarefa, edita_tarefa, ConfigView
 from django.contrib.auth.views import LogoutView
 from django.views.generic import TemplateView
 
@@ -10,7 +10,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('registrar/', Registrar.as_view(), name='registrar'),
     path('', VisualizaGrupo.as_view(), name='grupos'),
-    path('subgrupos/<int:pk>', VisualizaSubGrupo.as_view(), name='subgrupos'),
+    path('subgrupos/<int:pk>', ConfigView.as_view(), name='subgrupos'),
     path('criar/<int:grupo>/<int:subgrupo_tar_id>/', pega_get_tarefa, name='criar'),
     path('criar_grupo/', CriarGrupo.as_view(), name='criar_grupo'),
     path('criar_subgrupo/<int:grupo>/', pega_get, name='criar_subgrupo'),

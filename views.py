@@ -9,6 +9,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.core.exceptions import PermissionDenied
 
 
 # Bloco Autenticação
@@ -45,9 +46,19 @@ class Sair(LogoutView):
     def get_success_url(self):
         return reverse_lazy('login')
 
+class ConfigView(View):
+    template_name = 'login/permissao.html'
+
+    def render_to_responde(self):
+        if not self.request.user.has_perm('global_permissions.pode_acessar_pagina_config'):
+            raise PermissionDenied
 
 # Bloco Tratamento Grupos
 class VisualizaGrupo(LoginRequiredMixin, View):
+
+    def config_view(request):
+        if not request.user.has_perm('global_permissions.pode_acessar_pagina_config'):
+            raise PermissionDenied
 
     def get(self, request):
         busca = request.GET.get('search-area', '')
